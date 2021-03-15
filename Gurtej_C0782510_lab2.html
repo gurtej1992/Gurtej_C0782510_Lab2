@@ -5,26 +5,36 @@
     <title>Gurtej_C0782510_Lab2</title>
 </head>
 <style>
-    table, th, td {
-        border: 1px solid black;
+    #dynamic {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
     }
+
+    #dynamic td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #dynamic tr:nth-child(even){background-color: #f2f2f2;}
+
+    #dynamic tr:hover {background-color: #ddd;}
 </style>
 <body>
 <font size="8" color="green">Final test lab</font><br><br>
+<div id="tableInputs">
 Number of rows: <input type="text" id="t1" /><br><br>
 Number of cols: <input type="text" id="t2" /><br><br>
-
 <button id="b1" onclick="generateTable()">Generate Table</button><br><br>
-
+</div>
 <button id="b2" onclick="addColumn()" disabled>Add Column</button>
-
 <button id="b3" onclick="addRow()" disabled>Add Row</button>
 <button id="b4" onclick="clearAll()" disabled>Clear</button>
 <br><br>
-<table id="dynamic"></table>
+<table id="dynamic" class="dynamic"></table>
 <script language="javascript">
 function generateTable(){
-    document.getElementById("b2").disabled = false;
+    //document.getElementById("b2").disabled = false;
     document.getElementById("b3").disabled = false;
     document.getElementById("b4").disabled = false;
     document.getElementById('dynamic').innerHTML = '';
@@ -48,6 +58,9 @@ function addRow(){
     let cell = row.insertCell(0);
     let colnumber = (table.rows[rowCount].cells.length) - 1;
     cell.innerHTML = "Row "+rowCount + " Col "+ colnumber;
+    if(table.rows[rowCount].cells.length !== table.rows[0].cells.length){
+        document.getElementById("b2").disabled = false;
+    }
 }
 function addColumn(){
     let table = document.getElementById("dynamic");
@@ -56,6 +69,9 @@ function addColumn(){
     let cell = lastRow.insertCell();
     let colNumber = (table.rows[rowCount].cells.length) - 1;
     cell.innerHTML = "Row "+rowCount + " Col "+ colNumber;
+    if(table.rows[rowCount].cells.length === table.rows[0].cells.length){
+        document.getElementById("b2").disabled = true;
+    }
 
 }
 function clearAll(){
