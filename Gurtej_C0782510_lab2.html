@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>Gurtej_C0782510_Lab2</title>
 </head>
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
 <body>
 <font size="8" color="green">Final test lab</font><br><br>
 Number of rows: <input type="text" id="t1" /><br><br>
@@ -11,13 +16,56 @@ Number of cols: <input type="text" id="t2" /><br><br>
 
 <button id="b1" onclick="generateTable()">Generate Table</button><br><br>
 
-<button id="b2" onclick="addColumn()">Add Column</button>
+<button id="b2" onclick="addColumn()" disabled>Add Column</button>
 
-<button id="b3" onclick="addRow()">Add Row</button>
-
+<button id="b3" onclick="addRow()" disabled>Add Row</button>
+<button id="b4" onclick="clearAll()" disabled>Clear</button>
+<br><br>
+<table id="dynamic"></table>
 <script language="javascript">
+function generateTable(){
+    document.getElementById("b2").disabled = false;
+    document.getElementById("b3").disabled = false;
+    document.getElementById("b4").disabled = false;
+    document.getElementById('dynamic').innerHTML = '';
+    let rows = document.getElementById("t1").value;
+    let cols = document.getElementById("t2").value;
+    let table = document.querySelector("table");
+    for (let row = 0; row <= rows; row++) {
+        let rowz = table.insertRow();
+        rowz.id = "row"+row
+        for (let col = 0; col <= cols; col++) {
+            let cell = rowz.insertCell();
+            cell.innerHTML = "Row "+row + " Col "+ col;
+        }
+        }
+}
+function addRow(){
+    let table = document.getElementById("dynamic");
+    let rowCount = table.rows.length;
+    let row = table.insertRow(rowCount);
+    row.id = "row" + rowCount
+    let cell = row.insertCell(0);
+    let colnumber = (table.rows[rowCount].cells.length) - 1;
+    cell.innerHTML = "Row "+rowCount + " Col "+ colnumber;
+}
+function addColumn(){
+    let table = document.getElementById("dynamic");
+    let rowCount = table.rows.length - 1;
+    let lastRow = document.getElementById("row"+rowCount)
+    let cell = lastRow.insertCell();
+    let colNumber = (table.rows[rowCount].cells.length) - 1;
+    cell.innerHTML = "Row "+rowCount + " Col "+ colNumber;
 
-    //Your code goes here
+}
+function clearAll(){
+    document.getElementById("b2").disabled = true;
+    document.getElementById("b3").disabled = true;
+    document.getElementById("b4").disabled = true;
+    document.getElementById('dynamic').innerHTML = '';
+    document.getElementById("t1").value = '';
+    document.getElementById("t2").value = '';
+}
 
 </script>
 </body>
