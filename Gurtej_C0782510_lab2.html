@@ -1,106 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Gurtej_C0782510_Lab2</title>
-</head>
-<style>
-    #dynamic {
+<html>
+<font size="8" color="green">Final test lab</font><br><br>
+Number of rows: <input type="text" id="t1"/><br><br>
+Number of cols: <input type="text" id="t2"/><br><br>
+
+<button id="b1" onclick="generateTable()">Generate Table</button>
+<br><br>
+
+<button id="b2" onclick="addColumn()">Add Column</button>
+
+<button id="b3" onclick="addRow()">Add Row</button>
+
+<script language="javascript">
+    // Preventing user to click on Add Row and Add Column Button before generating table.
+    document.getElementById("b2").disabled = true;
+    document.getElementById("b3").disabled = true;
+
+    function generateTable() {
+        // Retrieving input from user.
+        let rows = document.getElementById("t1").value;
+        let cols = document.getElementById("t2").value;
+        // Empty fields check.
+        if (rows === "0" || rows === "" || cols === "0" || cols === "") {
+            alert("Rows and Cols field should neither empty nor less than 1.")
+            return
+        }
+        // Replacing content enclosed in html tag.
+        let html = document.querySelector("html")
+        html.innerHTML = "<head><title>Gurtej_C0782510_lab2</title></head><button id=\"b3\" onclick=\"addRow()\">Add Row</button>\t<button id=\"b2\" onclick=\"addColumn()\">Add Column</button><br\><br\><table id=\"dynamic\" class=\"dynamic\"></table>";
+
+        // Adding CSS with js.
+        let styles = `#dynamic {
         font-family: Arial, Helvetica, sans-serif;
         border-collapse: collapse;
         width: 100%;
-    }
-
-    #dynamic td {
+        }
+        #dynamic td {
         border: 1px solid #ddd;
         padding: 8px;
-    }
-
-    #dynamic tr:nth-child(even){background-color: #f2f2f2;}
-
-    #dynamic tr:hover {background-color: #ddd;}
-</style>
-<body>
-<font size="8" color="green">Final test lab</font><br><br>
-<div id="tableInputs">
-Number of rows: <input type="text" id="t1"/><br><br>
-Number of cols: <input type="text" id="t2"/><br><br>
-<button id="b1" onclick="generateTable()">Generate Table</button><br><br>
-</div>
-<button id="b2" onclick="addColumn()" disabled>Add Column</button>
-<button id="b3" onclick="addRow()" disabled>Add Row</button>
-<button id="b4" onclick="clearAll()" disabled>Reset</button>
-<br><br>
-<table id="dynamic" class="dynamic"></table>
-<script language="javascript">
-function generateTable(){
-    let rows = document.getElementById("t1").value;
-    let cols = document.getElementById("t2").value;
-    if(rows === "0" || rows === "" || cols === "0" || cols === ""){
-        alert("Rows and Cols field should neither empty nor less than 1.")
-        return
-    }
-    document.getElementById("b3").disabled = false;
-    document.getElementById("b4").disabled = false;
-    document.getElementById('dynamic').innerHTML = '';
-    let table = document.querySelector("table");
-    for (let row = 0; row < rows; row++) {
-        let newRow = table.insertRow();
-        newRow.id = "row"+row
-        for (let col = 0; col < cols; col++) {
-            let cell = newRow.insertCell();
-            cell.innerHTML = "Row "+row + " Col "+ col;
         }
+        #dynamic tr:nth-child(even){background-color: #f2f2f2;}
+        #dynamic tr:hover {background-color: #ddd;}`
+        let styleSheet = document.createElement("style")
+        styleSheet.innerText = styles
+        document.head.appendChild(styleSheet)
+
+        //Enabling AddRow Button.
+        document.getElementById("b3").disabled = false;
+
+        // Creating table with rows and column inputted by user.
+        let table = document.querySelector("table");
+        for (let row = 0; row < rows; row++) {
+            let newRow = table.insertRow();
+            newRow.id = "row" + row
+            for (let col = 0; col < cols; col++) {
+                let cell = newRow.insertCell();
+                cell.innerHTML = "Row " + row + " Col " + col;
+            }
         }
-    disableAddCol(true);
-    wipeInputElements(true);
-}
-function addRow(){
-    let table = document.getElementById("dynamic");
-    let rowCount = table.rows.length;
-    let row = table.insertRow(rowCount);
-    row.id = "row" + rowCount
-    let cell = row.insertCell(0);
-    let colNumber = (table.rows[rowCount].cells.length) - 1;
-    cell.innerHTML = "Row "+rowCount + " Col "+ colNumber;
-    if(table.rows[rowCount].cells.length !== table.rows[0].cells.length){
-        disableAddCol(false);
-    }
-}
-function addColumn(){
-    let table = document.getElementById("dynamic");
-    let rowCount = table.rows.length - 1;
-    let lastRow = document.getElementById("row"+rowCount)
-    let cell = lastRow.insertCell();
-    let colNumber = (table.rows[rowCount].cells.length) - 1;
-    cell.innerHTML = "Row "+rowCount + " Col "+ colNumber;
-    if(table.rows[rowCount].cells.length === table.rows[0].cells.length){
+        // Disabling add Column button as no more room in row to add column
         disableAddCol(true);
     }
-}
-function clearAll(){
-    wipeInputElements(false);
-    document.getElementById("b2").disabled = true;
-    document.getElementById("b2").title = ''
-    document.getElementById("b3").disabled = true;
-    document.getElementById("b4").disabled = true;
-    document.getElementById('dynamic').innerHTML = '';
-    document.getElementById("t1").value = '';
-    document.getElementById("t2").value = '';
-}
-function disableAddCol(value){
-    let addCol = document.getElementById("b2")
-    addCol.disabled = value;
-    if(value){
-        addCol.title = "No more room for new column in last row"
+
+    function addRow() {
+        let table = document.getElementById("dynamic");
+        let rowCount = table.rows.length;
+        let row = table.insertRow(rowCount);
+        row.id = "row" + rowCount
+        let cell = row.insertCell(0);
+        let colNumber = (table.rows[rowCount].cells.length) - 1;
+        cell.innerHTML = "Row " + rowCount + " Col " + colNumber;
+        if (table.rows[rowCount].cells.length !== table.rows[0].cells.length) {
+            disableAddCol(false);
+        }
     }
-    else {
-        addCol.title = "Click to add new column"
+
+    function addColumn() {
+        let table = document.getElementById("dynamic");
+        let rowCount = table.rows.length - 1;
+        let lastRow = document.getElementById("row" + rowCount)
+        let cell = lastRow.insertCell();
+        let colNumber = (table.rows[rowCount].cells.length) - 1;
+        cell.innerHTML = "Row " + rowCount + " Col " + colNumber;
+        if (table.rows[rowCount].cells.length === table.rows[0].cells.length) {
+            disableAddCol(true);
+        }
     }
-}
-function wipeInputElements(value){
-     document.getElementById("tableInputs").hidden = value
-}
+
+    function disableAddCol(value) {
+        let addCol = document.getElementById("b2")
+        addCol.disabled = value;
+        if (value) {
+            addCol.title = "No more room for new column in last row"
+        } else {
+            addCol.title = "Click to add new column"
+        }
+    }
 </script>
-</body>
 </html>
